@@ -1,9 +1,11 @@
 {
   "port": 3055,
   "publicBaseUrl": "",
+  "maxConcurrent": 10,
+  "maxQueueLength": 100,
   "upstream": {
-    "url": "http://52.221.92.226:8045",
-    "apiKey": "zhatianbang",
+    "url": "http://your-upstream-api:8045",
+    "apiKey": "your-upstream-api-key",
     "defaultModel": "gemini-3.1-flash-image-4K"
   },
   "security": {

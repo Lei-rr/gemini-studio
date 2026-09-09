@@ -8,6 +8,7 @@ RUN npm install --production --no-audit --no-fund
 
 # 拷贝代码与静态文件
 COPY server.js config.example.json ./
+COPY src/ ./src/
 COPY public/ ./public/
 
 # 创建图片存储与数据目录

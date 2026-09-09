@@ -1,7 +1,7 @@
 {
   "name": "gemini-img",
-  "version": "1.0.0",
-  "description": "AI Image Generation Gateway with Gemini 4K & SD WebUI / OpenAI Compatibility",
+  "version": "1.1.0",
+  "description": "High Performance Gemini AI Image Generation Service & Modern Studio",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,10 +13,11 @@
   },
   "keywords": [
     "gemini",
+    "gemini-image",
+    "gemini-3.1-flash-image",
     "image-generation",
     "dalle",
     "openai",
-    "sdapi",
     "4k"
   ],
   "author": "Lei-rr",
