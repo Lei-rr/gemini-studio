@@ -52,7 +52,7 @@ class UpstreamClient {
   }
 
   /**
-   * 调用上游模型生成图像 (包含并发控制与客户端断开感知)
+   * 调用上游模型生成图像 (包含画幅比例注入、并发控制与客户端断开感知)
    */
   async generateImage(req, prompt, options = {}) {
     if (!this.config.upstream.url) {
@@ -61,6 +61,32 @@ class UpstreamClient {
 
     const model = options.model || this.config.upstream.defaultModel;
     let fullPrompt = prompt.trim();
+
+    // 1. 画幅比例精准注入 (Gemini Imagen 3/3.1 识别 aspect ratio 提示)
+    const aspectRatio = options.aspect_ratio || options.aspectRatio;
+    const width = Number(options.width);
+    const height = Number(options.height);
+
+    let ratioStr = "";
+    if (aspectRatio) {
+      ratioStr = aspectRatio;
+    } else if (width && height) {
+      const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+      const g = gcd(width, height);
+      ratioStr = `${width / g}:${height / g}`;
+      // 常见比例归一化
+      if (Math.abs(width / height - 16 / 9) < 0.05) ratioStr = "16:9";
+      else if (Math.abs(width / height - 9 / 16) < 0.05) ratioStr = "9:16";
+      else if (Math.abs(width / height - 4 / 3) < 0.05) ratioStr = "4:3";
+      else if (Math.abs(width / height - 3 / 4) < 0.05) ratioStr = "3:4";
+      else if (Math.abs(width / height - 1) < 0.05) ratioStr = "1:1";
+    }
+
+    if (ratioStr) {
+      fullPrompt += ` --ar ${ratioStr} (aspect ratio: ${ratioStr})`;
+    }
+
+    // 2. 负向提示词
     if (options.negative_prompt && options.negative_prompt.trim()) {
       fullPrompt += `\n(Negative Prompt / Avoid: ${options.negative_prompt.trim()})`;
     }

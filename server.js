@@ -66,7 +66,7 @@ app.get("/", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "index.html")));
 
 // 2. 核心生图接口 (WebUI 使用)
 app.post("/generate", authGuard, async (req, res) => {
-  const { prompt, negative_prompt, model } = req.body;
+  const { prompt, negative_prompt, model, width, height, aspect_ratio } = req.body;
   if (!prompt || !prompt.trim()) {
     return res.status(400).json({ error: "请输入提示词 (prompt 必填)" });
   }
@@ -75,6 +75,9 @@ app.post("/generate", authGuard, async (req, res) => {
     const result = await upstreamClient.generateImage(req, prompt, {
       negative_prompt,
       model,
+      width,
+      height,
+      aspect_ratio,
     });
     res.json({
       success: true,
@@ -97,6 +100,9 @@ app.get(["/image", "/draw"], authGuard, async (req, res) => {
   try {
     const result = await upstreamClient.generateImage(req, prompt, {
       model: req.query.model,
+      aspect_ratio: req.query.ar || req.query.aspect_ratio,
+      width: req.query.w || req.query.width,
+      height: req.query.h || req.query.height,
     });
     if (req.query.format === "json") {
       return res.json(result);
@@ -109,13 +115,25 @@ app.get(["/image", "/draw"], authGuard, async (req, res) => {
 
 // 4. OpenAI DALL-E / 兼容格式接口 POST /v1/images/generations
 app.post(["/v1/images/generations", "/images/generations"], authGuard, async (req, res) => {
-  const { prompt, model } = req.body;
+  const { prompt, model, size, aspect_ratio } = req.body;
   if (!prompt) {
     return res.status(400).json({ error: { message: "Missing required parameter 'prompt'" } });
   }
 
+  let width, height;
+  if (typeof size === "string" && size.includes("x")) {
+    const parts = size.split("x");
+    width = parseInt(parts[0], 10);
+    height = parseInt(parts[1], 10);
+  }
+
   try {
-    const result = await upstreamClient.generateImage(req, prompt, { model });
+    const result = await upstreamClient.generateImage(req, prompt, {
+      model,
+      width,
+      height,
+      aspect_ratio,
+    });
     res.json({
       created: Math.floor(Date.now() / 1000),
       data: [{ url: result.url }],

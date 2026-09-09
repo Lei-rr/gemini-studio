@@ -143,25 +143,25 @@
               <i data-lucide="proportions" class="w-4 h-4 text-indigo-400"></i> 画幅比例
             </label>
             <div class="grid grid-cols-4 gap-2 text-center" id="ratioSelector">
-              <button type="button" data-w="1024" data-h="1024" onclick="selectRatio(this)" class="ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
+              <button type="button" data-ratio="1:1" data-w="1024" data-h="1024" onclick="selectRatio(this)" class="ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
                 <span class="w-5 h-5 border border-current rounded flex items-center justify-center text-[10px]">1:1</span>
                 <span>正方形</span>
-                <span class="text-[10px] text-slate-400 font-mono">1024x1024</span>
+                <span class="text-[10px] text-slate-400 font-mono">1:1 (头像/方图)</span>
               </button>
-              <button type="button" data-w="1280" data-h="720" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
+              <button type="button" data-ratio="16:9" data-w="1920" data-h="1080" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
                 <span class="w-6 h-3.5 border border-current rounded flex items-center justify-center text-[9px]">16:9</span>
                 <span>横屏壁纸</span>
-                <span class="text-[10px] text-slate-500 font-mono">1280x720</span>
+                <span class="text-[10px] text-slate-500 font-mono">16:9 (宽屏)</span>
               </button>
-              <button type="button" data-w="720" data-h="1280" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
+              <button type="button" data-ratio="9:16" data-w="1080" data-h="1920" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
                 <span class="w-3.5 h-6 border border-current rounded flex items-center justify-center text-[9px]">9:16</span>
                 <span>手机壁纸</span>
-                <span class="text-[10px] text-slate-500 font-mono">720x1280</span>
+                <span class="text-[10px] text-slate-500 font-mono">9:16 (竖屏)</span>
               </button>
-              <button type="button" data-w="1024" data-h="768" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
+              <button type="button" data-ratio="4:3" data-w="1024" data-h="768" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1">
                 <span class="w-5 h-4 border border-current rounded flex items-center justify-center text-[9px]">4:3</span>
                 <span>标准画幅</span>
-                <span class="text-[10px] text-slate-500 font-mono">1024x768</span>
+                <span class="text-[10px] text-slate-500 font-mono">4:3 (经典)</span>
               </button>
             </div>
           </div>
@@ -372,6 +372,7 @@
     let modalImageData = null;
     let selectedW = 1024;
     let selectedH = 1024;
+    let selectedRatio = '1:1';
     let timerInterval = null;
     let historyList = JSON.parse(localStorage.getItem('sd_history') || '[]');
 
@@ -407,6 +408,7 @@
         b.className = "ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1";
       });
       btn.className = "ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1";
+      selectedRatio = btn.getAttribute('data-ratio') || '1:1';
       selectedW = Number(btn.getAttribute('data-w'));
       selectedH = Number(btn.getAttribute('data-h'));
     }
@@ -468,6 +470,7 @@
             prompt,
             negative_prompt,
             model,
+            aspect_ratio: selectedRatio,
             width: selectedW,
             height: selectedH
           })
@@ -486,6 +489,7 @@
             prompt,
             cost,
             model: data.model || model,
+            ratio: selectedRatio,
             dimensions: `${selectedW}x${selectedH}`,
           };
 
