@@ -155,7 +155,7 @@ app.get("/health", (req, res) => {
 // 启动服务
 app.listen(config.port, "0.0.0.0", () => {
   console.log(`=================================================`);
-  console.log(`🚀 [gemini-img] 在线生图服务运行于: http://0.0.0.0:${config.port}`);
+  console.log(`🚀 [gemini-studio] 在线生图服务运行于: http://0.0.0.0:${config.port}`);
   console.log(`🔗 映射上游 : ${config.upstream.url || "(待通过 config.json 或环境变量配置)"}`);
   console.log(`🎨 默认模型 : ${config.upstream.defaultModel}`);
   console.log(`👥 最大并发 : ${config.maxConcurrent} | 最大排队: ${config.maxQueueLength}`);

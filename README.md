@@ -1,4 +1,4 @@
-# gemini-img
+# gemini-studio
 
 🚀 基于 Node.js 构建的高性能 Gemini AI 图像生成服务与现代化工作站。
 原生对接 Gemini 4K 生图模型（`gemini-3.1-flash-image-4K`），完美兼容标准 OpenAI 图像生成规范。
@@ -46,9 +46,9 @@
 ### 2. 启动服务
 ```yaml
 services:
-  gemini-img:
-    image: ghcr.io/lei-rr/gemini-img:latest
-    container_name: gemini-img
+  gemini-studio:
+    image: ghcr.io/lei-rr/gemini-studio:latest
+    container_name: gemini-studio
     restart: always
     ports:
       - "3055:3055"
