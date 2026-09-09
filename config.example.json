@@ -1,0 +1,12 @@
+{
+  "port": 3055,
+  "publicBaseUrl": "",
+  "upstream": {
+    "url": "http://52.221.92.226:8045",
+    "apiKey": "zhatianbang",
+    "defaultModel": "gemini-3.1-flash-image-4K"
+  },
+  "security": {
+    "serviceApiKey": ""
+  }
+}

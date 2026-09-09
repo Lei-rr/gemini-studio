@@ -1,0 +1,6 @@
+node_modules/
+images/
+*.log
+test_output.jpg
+config.json
+.DS_Store

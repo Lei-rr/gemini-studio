@@ -1,0 +1,24 @@
+{
+  "name": "gemini-img",
+  "version": "1.0.0",
+  "description": "AI Image Generation Gateway with Gemini 4K & SD WebUI / OpenAI Compatibility",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "keywords": [
+    "gemini",
+    "image-generation",
+    "dalle",
+    "openai",
+    "sdapi",
+    "4k"
+  ],
+  "author": "Lei-rr",
+  "license": "MIT"
+}
