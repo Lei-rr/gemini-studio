@@ -21,11 +21,11 @@ function loadConfig() {
     publicBaseUrl: (process.env.PUBLIC_BASE_URL || jsonConfig.publicBaseUrl || "").replace(/\/+$/, ""),
     maxConcurrent: Number(process.env.MAX_CONCURRENT) || jsonConfig.maxConcurrent || 10,
     maxQueueLength: Number(process.env.MAX_QUEUE) || jsonConfig.maxQueueLength || 100,
-    requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT) || jsonConfig.requestTimeoutMs || 120000,
+    requestTimeoutMs: Number(process.env.REQUEST_TIMEOUT) || jsonConfig.requestTimeoutMs || 180000,
     upstream: {
       url: upstreamUrl,
       apiKey: upstreamKey,
-      defaultModel: process.env.UPSTREAM_MODEL || jsonConfig.upstream?.defaultModel || "gemini-3.1-flash-image-4K",
+      defaultModel: process.env.UPSTREAM_MODEL || jsonConfig.upstream?.defaultModel || "gemini-3.1-flash-image",
     },
     security: {
       serviceApiKey: process.env.SERVICE_API_KEY || jsonConfig.security?.serviceApiKey || "",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Gemini Studio · 现代 AI 绘图工作站</title>
+  <title>Gemini Studio · AI 绘图工作站</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
   <script>
     const _warn = console.warn;
@@ -23,14 +23,10 @@
             brand: {
               50: '#eef2ff',
               100: '#e0e7ff',
-              400: '#818cf8',
               500: '#6366f1',
               600: '#4f46e5',
               700: '#4338ca',
             }
-          },
-          boxShadow: {
-            'glow': '0 0 30px -5px rgba(99, 102, 241, 0.45)',
           }
         }
       }
@@ -39,16 +35,10 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @keyframes pulse-glow {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 0.9; transform: scale(1.02); }
-    }
-    .animate-pulse-glow { animation: pulse-glow 3s infinite ease-in-out; }
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
-    /* 防止手机双击缩放与文字错位 */
     button, input, textarea, select {
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
@@ -58,222 +48,215 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white font-sans antialiased overflow-x-hidden">
 
   <!-- 顶部导航栏 -->
-  <header class="border-b border-slate-800/80 bg-slate-900/80 backdrop-blur-xl sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2.5 sm:gap-3">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
-          <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-md shrink-0">
+          <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-base sm:text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent whitespace-nowrap">Gemini Studio</span>
+          <span class="text-base font-bold tracking-tight text-white whitespace-nowrap">Gemini Studio</span>
           <span class="text-[11px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-mono whitespace-nowrap">炸天帮 API</span>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <div class="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full whitespace-nowrap">
-          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-medium">在线</span>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2.5 py-1 rounded-full whitespace-nowrap">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-medium">就绪</span>
         </div>
       </div>
     </div>
   </header>
 
   <!-- 主工作区 -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
       
       <!-- 左侧控制面板 (5 列) -->
-      <div class="lg:col-span-5 space-y-4 sm:space-y-6">
-        <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-xl space-y-4 sm:space-y-5">
+      <div class="lg:col-span-5 space-y-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-lg space-y-4">
           
           <!-- 模型选择器 -->
           <div>
-            <label class="text-xs font-semibold text-slate-300 flex items-center justify-between mb-2">
+            <label class="text-xs font-semibold text-slate-300 flex items-center justify-between mb-1.5">
               <span class="flex items-center gap-1.5">
-                <i data-lucide="cpu" class="w-3.5 h-3.5 text-indigo-400"></i> 生图模型 (Model)
+                <i data-lucide="cpu" class="w-3.5 h-3.5 text-indigo-400"></i> 生图模型
               </span>
-              <span class="text-[10px] text-emerald-400 font-mono">炸天帮 API</span>
+              <span class="text-[10px] text-indigo-400 font-mono">极速首选</span>
             </label>
-            <select id="modelSelect" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono cursor-pointer transition">
-              <option value="gemini-3.1-flash-image-4K" selected>💎 gemini-3.1-flash-image-4K (4K 旗舰超清 · 默认)</option>
-              <option value="gemini-3.1-flash-image-2K">✨ gemini-3.1-flash-image-2K (2K 高清画质)</option>
-              <option value="gemini-3.1-flash-image">⚡ gemini-3.1-flash-image (1K 标准画质)</option>
+            <select id="modelSelect" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono cursor-pointer transition">
+              <option value="gemini-3.1-flash-image" selected>⚡ gemini-3.1-flash-image (极速秒出 · 推荐)</option>
+              <option value="gemini-3.1-flash-image-2K">✨ gemini-3.1-flash-image-2K (2K 高清平衡)</option>
+              <option value="gemini-3.1-flash-image-4K">💎 gemini-3.1-flash-image-4K (4K 旗舰画质)</option>
             </select>
           </div>
 
           <!-- 提示词输入框 -->
           <div>
-            <div class="flex justify-between items-center mb-2">
-              <label class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-1.5">
-                <i data-lucide="wand-2" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400"></i> 正向提示词 (Prompt)
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <i data-lucide="wand-2" class="w-3.5 h-3.5 text-indigo-400"></i> 画面提示词 (Prompt)
               </label>
               <button onclick="clearPrompt()" class="text-xs text-slate-500 hover:text-slate-300 transition py-0.5 px-1.5">清空</button>
             </div>
             <textarea id="promptInput" rows="3" 
-              placeholder="输入你想要的画面描述，支持中文或英文..." 
-              class="w-full bg-slate-950/70 border border-slate-700/80 rounded-xl p-3 sm:px-4 sm:py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none leading-relaxed">a cute cyberpunk cat with neon sunglasses sitting on city roof, rain, 8k resolution</textarea>
+              placeholder="输入画面描述，支持中英文..." 
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition resize-none leading-relaxed">a cute cyberpunk cat with neon sunglasses sitting on city roof, rain, 8k resolution</textarea>
             
-            <!-- 预设灵感标签 -->
-            <div class="mt-2.5 flex flex-wrap items-center gap-1.5">
+            <!-- 预设灵感 -->
+            <div class="mt-2 flex flex-wrap items-center gap-1.5">
               <span class="text-[11px] text-slate-500 mr-0.5 whitespace-nowrap">灵感:</span>
-              <button onclick="setQuickPrompt('赛博朋克霓虹城市夜景，雨夜倒影，高楼大厦，电影级光影，8k高清')" class="text-[11px] bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded-md border border-slate-700/50 transition whitespace-nowrap">赛博夜景</button>
-              <button onclick="setQuickPrompt('穿着宇航服在深邃宇宙中漂浮的可爱猫咪，璀璨星系，杰作，8k')" class="text-[11px] bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded-md border border-slate-700/50 transition whitespace-nowrap">宇航猫咪</button>
-              <button onclick="setQuickPrompt('银发二次元美少女，樱花飞舞，夕阳海滩，唯美吉卜力风格')" class="text-[11px] bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded-md border border-slate-700/50 transition whitespace-nowrap">唯美动漫</button>
-              <button onclick="setQuickPrompt('3D可爱生肖龙盲盒手办，光滑塑料质感，马卡龙柔和色调，摄影级柔光，Octane渲染')" class="text-[11px] bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded-md border border-slate-700/50 transition whitespace-nowrap">3D盲盒</button>
+              <button onclick="setQuickPrompt('赛博朋克霓虹城市夜景，雨夜倒影，高楼大厦，电影级光影，8k高清')" class="text-[11px] bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-700/60 transition whitespace-nowrap">赛博夜景</button>
+              <button onclick="setQuickPrompt('穿着宇航服在深邃宇宙中漂浮的可爱猫咪，璀璨星系，杰作，8k')" class="text-[11px] bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-700/60 transition whitespace-nowrap">宇航猫咪</button>
+              <button onclick="setQuickPrompt('银发二次元美少女，樱花飞舞，夕阳海滩，唯美吉卜力风格')" class="text-[11px] bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-700/60 transition whitespace-nowrap">唯美动漫</button>
+              <button onclick="setQuickPrompt('3D可爱生肖龙盲盒手办，光滑塑料质感，马卡龙柔和配色，柔光Octane渲染')" class="text-[11px] bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-700/60 transition whitespace-nowrap">3D潮玩</button>
+            </div>
+          </div>
+
+          <!-- 画幅比例选择器 -->
+          <div>
+            <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5 mb-1.5">
+              <i data-lucide="proportions" class="w-3.5 h-3.5 text-indigo-400"></i> 画幅比例
+            </label>
+            <div class="grid grid-cols-4 gap-2 text-center" id="ratioSelector">
+              <button type="button" data-ratio="1:1" data-w="1024" data-h="1024" onclick="selectRatio(this)" class="ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border py-2 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
+                <span class="text-xs font-mono">1:1</span>
+                <span class="text-[10px] whitespace-nowrap">方形</span>
+              </button>
+              <button type="button" data-ratio="16:9" data-w="1920" data-h="1080" onclick="selectRatio(this)" class="ratio-btn bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
+                <span class="text-xs font-mono">16:9</span>
+                <span class="text-[10px] whitespace-nowrap">横屏壁纸</span>
+              </button>
+              <button type="button" data-ratio="9:16" data-w="1080" data-h="1920" onclick="selectRatio(this)" class="ratio-btn bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
+                <span class="text-xs font-mono">9:16</span>
+                <span class="text-[10px] whitespace-nowrap">手机壁纸</span>
+              </button>
+              <button type="button" data-ratio="4:3" data-w="1024" data-h="768" onclick="selectRatio(this)" class="ratio-btn bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
+                <span class="text-xs font-mono">4:3</span>
+                <span class="text-[10px] whitespace-nowrap">标准相册</span>
+              </button>
             </div>
           </div>
 
           <!-- 折叠反向提示词 -->
           <div>
-            <button onclick="toggleNegative()" class="flex items-center justify-between w-full text-xs text-slate-400 hover:text-slate-200 transition py-1">
-              <span class="flex items-center gap-1.5 font-medium"><i data-lucide="shield-alert" class="w-3.5 h-3.5 text-slate-400"></i> 反向提示词 (Negative Prompt)</span>
-              <i id="negChevron" data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+            <button onclick="toggleNegative()" class="flex items-center justify-between w-full text-xs text-slate-400 hover:text-slate-200 transition py-0.5">
+              <span class="flex items-center gap-1.5 font-medium"><i data-lucide="shield-alert" class="w-3.5 h-3.5 text-slate-400"></i> 反向提示词 (可选)</span>
+              <i id="negChevron" data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform"></i>
             </button>
             <div id="negativeWrapper" class="hidden mt-2">
               <textarea id="negativeInput" rows="2" 
-                placeholder="不希望出现的元素，如：lowres, bad anatomy, bad hands, text, error..." 
-                class="w-full bg-slate-950/70 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition resize-none"></textarea>
-            </div>
-          </div>
-
-          <!-- 画幅比例选择器 (自适应手机 2列/电脑 4列，文字绝不错行) -->
-          <div>
-            <label class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-1.5 mb-2 sm:mb-2.5">
-              <i data-lucide="proportions" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400"></i> 画幅比例
-            </label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center" id="ratioSelector">
-              <button type="button" data-ratio="1:1" data-w="1024" data-h="1024" onclick="selectRatio(this)" class="ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
-                <span class="w-5 h-5 border border-current rounded flex items-center justify-center text-[10px] font-mono">1:1</span>
-                <span class="font-medium whitespace-nowrap">正方形</span>
-                <span class="text-[10px] text-slate-400 font-mono whitespace-nowrap">1:1 方形图</span>
-              </button>
-              <button type="button" data-ratio="16:9" data-w="1920" data-h="1080" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
-                <span class="w-6 h-3.5 border border-current rounded flex items-center justify-center text-[9px] font-mono">16:9</span>
-                <span class="font-medium whitespace-nowrap">横屏壁纸</span>
-                <span class="text-[10px] text-slate-500 font-mono whitespace-nowrap">16:9 电脑宽屏</span>
-              </button>
-              <button type="button" data-ratio="9:16" data-w="1080" data-h="1920" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
-                <span class="w-3.5 h-6 border border-current rounded flex items-center justify-center text-[9px] font-mono">9:16</span>
-                <span class="font-medium whitespace-nowrap">手机壁纸</span>
-                <span class="text-[10px] text-slate-500 font-mono whitespace-nowrap">9:16 竖屏海报</span>
-              </button>
-              <button type="button" data-ratio="4:3" data-w="1024" data-h="768" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
-                <span class="w-5 h-4 border border-current rounded flex items-center justify-center text-[9px] font-mono">4:3</span>
-                <span class="font-medium whitespace-nowrap">标准画幅</span>
-                <span class="text-[10px] text-slate-500 font-mono whitespace-nowrap">4:3 经典相册</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 批量出图张数选择器 (新增) -->
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <label class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-1.5">
-                <i data-lucide="layers" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400"></i> 生成张数 (Batch Count)
-              </label>
-              <span id="batchCountBadge" class="text-[11px] text-indigo-400 font-mono">1 张单图</span>
-            </div>
-            <div class="grid grid-cols-3 gap-2" id="batchSelector">
-              <button type="button" data-count="1" onclick="selectBatchCount(this)" class="batch-btn active bg-indigo-600/20 border-indigo-500/80 text-white border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <i data-lucide="image" class="w-3.5 h-3.5"></i> 1 张
-              </button>
-              <button type="button" data-count="2" onclick="selectBatchCount(this)" class="batch-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <i data-lucide="columns-2" class="w-3.5 h-3.5"></i> 2 张对比
-              </button>
-              <button type="button" data-count="4" onclick="selectBatchCount(this)" class="batch-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <i data-lucide="grid-2x2" class="w-3.5 h-3.5"></i> 4 宫格
-              </button>
+                placeholder="排除不希望出现的元素，如：lowres, blurry, bad anatomy..." 
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition resize-none"></textarea>
             </div>
           </div>
 
           <!-- 生成按钮 -->
-          <button id="generateBtn" onclick="handleBatchGenerate()" 
-            class="w-full py-3.5 sm:py-4 rounded-xl font-bold text-sm sm:text-base bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-[0.99] text-white shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-            <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform"></i>
-            <span id="generateBtnText">立即生成图片</span>
+          <button id="generateBtn" onclick="handleGenerate()" 
+            class="w-full py-3.5 rounded-xl font-bold text-sm bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] text-white shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>立即生成图片</span>
           </button>
         </div>
 
-        <!-- 极简直接调用示例 (手机折叠/小巧展示) -->
-        <div class="bg-slate-900/50 border border-slate-800/60 rounded-xl p-3.5 sm:p-4 text-xs space-y-1.5 text-slate-400">
+        <!-- 极简外链调用 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-400 space-y-1">
           <div class="flex items-center justify-between text-slate-300 font-medium">
-            <span class="flex items-center gap-1.5"><i data-lucide="terminal" class="w-3.5 h-3.5 text-indigo-400"></i> 直接调用</span>
-            <span class="text-[11px] text-indigo-400 font-mono">浏览器直出图片</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="terminal" class="w-3.5 h-3.5 text-indigo-400"></i> 浏览器直出外链</span>
           </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">在浏览器地址栏直接回车出图：</p>
-          <div class="bg-slate-950 p-2 sm:p-2.5 rounded-lg font-mono text-[11px] text-slate-300 break-all select-all border border-slate-800/80">
+          <div class="bg-slate-950 p-2 rounded font-mono text-[11px] text-slate-300 break-all select-all border border-slate-800">
             http://<span class="host-placeholder">localhost:3055</span>/image?prompt=cat
           </div>
         </div>
       </div>
 
       <!-- 右侧当前视口展示区 (7 列) -->
-      <div class="lg:col-span-7 space-y-4 sm:space-y-6">
-        <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-xl flex flex-col min-h-[440px] sm:min-h-[540px]">
+      <div class="lg:col-span-7 space-y-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col min-h-[460px]">
           
-          <div class="flex items-center justify-between pb-3 sm:pb-4 mb-3 sm:mb-4 border-b border-slate-800/80">
-            <div class="flex items-center gap-2">
-              <h3 class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2">
-                <i data-lucide="image" class="w-4 h-4 text-indigo-400"></i> 画布工作台 (当前任务)
-              </h3>
-              <span id="taskProgressTag" class="hidden text-[10px] px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-mono">
-                进行中...
-              </span>
-            </div>
-            
-            <div id="metaBadge" class="hidden text-[11px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono whitespace-nowrap">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <h3 class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="image" class="w-4 h-4 text-indigo-400"></i> 画布视口
+            </h3>
+            <div id="metaBadge" class="hidden text-xs px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono whitespace-nowrap">
               --
             </div>
           </div>
 
-          <!-- 核心画布视口 (支持 1张 / 2张对比 / 4宫格异步渲染卡片) -->
-          <div id="displayViewport" class="flex-1 rounded-xl bg-slate-950/80 border border-slate-800/60 flex items-center justify-center p-3 relative overflow-hidden group min-h-[320px] sm:min-h-[420px]">
+          <!-- 图片展示与加载视口 (固定比例与高度，杜绝抖动与乱行) -->
+          <div id="displayViewport" class="flex-1 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center p-3 relative overflow-hidden group min-h-[340px]">
             
             <!-- 默认空状态 -->
-            <div id="emptyState" class="text-center space-y-2.5 sm:space-y-3 max-w-sm py-8 sm:py-12 px-4">
-              <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto">
-                <i data-lucide="palette" class="w-6 h-6 sm:w-8 sm:h-8"></i>
+            <div id="emptyState" class="text-center space-y-2 max-w-sm py-12 px-4">
+              <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto mb-2">
+                <i data-lucide="palette" class="w-6 h-6"></i>
               </div>
-              <h4 class="text-slate-200 font-semibold text-sm sm:text-base">准备创作</h4>
-              <p class="text-xs text-slate-400 leading-relaxed">在左侧输入你的灵感提示词，支持单张或 2~4 宫格批量出图，任务将在右侧实时呈现。</p>
+              <h4 class="text-slate-200 font-semibold text-sm">准备创作</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">在左侧输入提示词并点击生成，生成的画作将实时在此呈现。</p>
             </div>
 
-            <!-- 动态批量任务栅格卡片容器 (动态填入) -->
-            <div id="batchTaskGrid" class="hidden w-full h-full grid gap-3 items-center justify-center">
-              <!-- JS 渲染每个子任务卡片 -->
+            <!-- 加载状态动画 -->
+            <div id="loadingState" class="hidden text-center space-y-3 py-16">
+              <div class="relative w-14 h-14 mx-auto">
+                <div class="absolute inset-0 rounded-full border-2 border-indigo-500/20"></div>
+                <div class="absolute inset-0 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-indigo-400">
+                  <i data-lucide="sparkles" class="w-5 h-5 animate-pulse"></i>
+                </div>
+              </div>
+              <div class="space-y-0.5">
+                <h4 class="text-sm text-slate-200 font-semibold">正在高速绘制中...</h4>
+                <p class="text-xs text-slate-400">耗时 <span id="timerText" class="font-mono text-indigo-400 font-bold">0.0s</span></p>
+              </div>
             </div>
 
+            <!-- 错误状态提示卡片 -->
+            <div id="errorState" class="hidden text-center space-y-3 py-10 max-w-md px-4">
+              <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto">
+                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-slate-200 font-semibold text-sm">生成未完成</h4>
+                <p id="errorMsgText" class="text-xs text-rose-400/90 font-mono bg-rose-950/30 border border-rose-500/20 p-2 rounded-lg break-all"></p>
+              </div>
+              <button onclick="handleGenerate()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> 重试
+              </button>
+            </div>
+
+            <!-- 生成的图片展示 -->
+            <img id="resultImage" class="hidden max-h-[480px] w-auto max-w-full rounded-lg object-contain shadow-2xl transition duration-300 cursor-zoom-in" onclick="openLightbox(this.src)" alt="Generated Output">
           </div>
 
-          <!-- 快捷操作栏 (单张大图或批量生成完成后出现) -->
-          <div id="actionToolbar" class="hidden mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-2">
-            <button onclick="openLightbox()" class="w-full sm:w-auto px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+          <!-- 快捷操作栏 -->
+          <div id="actionToolbar" class="hidden mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-2">
+            <button onclick="openLightbox()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1.5 transition">
               <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> 全屏预览
             </button>
-            <button onclick="downloadImage()" class="w-full sm:w-auto px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 transition">
+            <button onclick="downloadImage()" class="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium flex items-center justify-center gap-1.5 transition">
               <i data-lucide="download" class="w-3.5 h-3.5"></i> 下载原图
             </button>
-            <button onclick="copyImageUrl()" class="w-full sm:w-auto px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+            <button onclick="copyImageUrl()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
               <i data-lucide="link" class="w-3.5 h-3.5"></i> 复制直链
             </button>
-            <button onclick="copyPrompt()" class="w-full sm:w-auto px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
+            <button onclick="copyPrompt()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5 transition">
               <i data-lucide="copy" class="w-3.5 h-3.5"></i> 复制提示词
             </button>
           </div>
         </div>
 
-        <!-- 本次会话生成历史 -->
-        <div class="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-3 sm:mb-4">
+        <!-- 本地作品画廊 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-3">
             <h4 class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-              <i data-lucide="history" class="w-3.5 h-3.5 text-indigo-400"></i> 生成记录 (<span id="historyCount">0</span>)
-              <span class="text-[11px] text-slate-500 font-normal hidden sm:inline">· 点击查看详情，不影响当前任务</span>
+              <i data-lucide="history" class="w-3.5 h-3.5 text-indigo-400"></i> 本地历史 (<span id="historyCount">0</span>)
+              <span class="text-[11px] text-slate-500 font-normal hidden sm:inline">· 点击弹窗查看</span>
             </h4>
             <button onclick="clearHistory()" class="text-xs text-slate-500 hover:text-rose-400 transition py-0.5 px-1.5">清空记录</button>
           </div>
-          <div id="historyGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3">
-            <!-- 历史缩略图动态插入 -->
+          <div id="historyGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+            <!-- 缩略图由 JS 渲染 -->
           </div>
         </div>
 
@@ -282,82 +265,68 @@
     </div>
   </main>
 
-  <!-- ========================================================================= -->
-  <!-- 历史图片弹出查看窗口 (独立 Modal，不挤占主视口) -->
-  <!-- ========================================================================= -->
+  <!-- 历史图片弹出查看窗口 -->
   <div id="historyModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6" onclick="closeHistoryModal()">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
-      
-      <!-- 弹窗标题栏 -->
-      <div class="px-4 sm:px-5 py-3 border-b border-slate-800/90 flex items-center justify-between bg-slate-900/80">
+      <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-          <h3 class="text-xs sm:text-sm font-semibold text-slate-200">生成历史详情</h3>
-          <span id="modalMetaBadge" class="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">--</span>
+          <h3 class="text-xs sm:text-sm font-semibold text-slate-200">历史详情</h3>
+          <span id="modalMetaBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">--</span>
         </div>
-        <button onclick="closeHistoryModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer" title="关闭窗口 (ESC)">
+        <button onclick="closeHistoryModal()" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <!-- 弹窗主体区 (图 + 信息) -->
-      <div class="p-3 sm:p-5 overflow-y-auto flex-1 space-y-3 sm:space-y-4">
-        <!-- 大图展示 -->
-        <div class="rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-center overflow-hidden min-h-[200px] max-h-[460px]">
+      <div class="p-3 sm:p-5 overflow-y-auto flex-1 space-y-3">
+        <div class="rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden min-h-[200px] max-h-[460px]">
           <img id="modalImage" class="max-h-[460px] w-auto max-w-full object-contain cursor-zoom-in" onclick="openLightbox(this.src)" alt="Historical Image">
         </div>
-
-        <!-- 提示词展示卡片 -->
-        <div class="bg-slate-950/70 border border-slate-800/70 rounded-xl p-3 sm:p-3.5 space-y-2">
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-              <i data-lucide="file-text" class="w-3.5 h-3.5 text-indigo-400"></i> 生成提示词:
-            </span>
+            <span class="text-xs font-semibold text-slate-300">生成提示词:</span>
             <button onclick="copyModalPrompt()" class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition">
-              <i data-lucide="copy" class="w-3 h-3"></i> 复制提示词
+              <i data-lucide="copy" class="w-3 h-3"></i> 复制
             </button>
           </div>
-          <p id="modalPromptText" class="text-xs text-slate-300 leading-relaxed font-mono select-all bg-slate-900/60 p-2 rounded-lg border border-slate-800/60 break-all"></p>
+          <p id="modalPromptText" class="text-xs text-slate-300 font-mono select-all bg-slate-900 p-2 rounded-lg border border-slate-800 break-all"></p>
         </div>
       </div>
 
-      <!-- 弹窗底部操作条 (移动端两列布局) -->
-      <div class="px-3 sm:px-5 py-3 border-t border-slate-800/90 bg-slate-900/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
-        <button onclick="applyModalPrompt()" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 text-xs font-medium flex items-center justify-center gap-1.5 transition cursor-pointer">
-          <i data-lucide="arrow-left-circle" class="w-4 h-4"></i> 填入并复用此提示词
+      <div class="px-4 py-3 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+        <button onclick="applyModalPrompt()" class="px-3 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 text-xs font-medium flex items-center justify-center gap-1 transition cursor-pointer">
+          <i data-lucide="arrow-left-circle" class="w-4 h-4"></i> 复用提示词
         </button>
-
         <div class="grid grid-cols-3 sm:flex sm:items-center gap-2">
-          <button onclick="copyModalImageUrl()" class="px-2.5 sm:px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1 transition cursor-pointer">
+          <button onclick="copyModalImageUrl()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1 transition cursor-pointer">
             <i data-lucide="link" class="w-3.5 h-3.5"></i> 复制直链
           </button>
-          <button onclick="downloadModalImage()" class="px-2.5 sm:px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1 shadow-lg shadow-indigo-600/20 transition cursor-pointer">
+          <button onclick="downloadModalImage()" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1 transition cursor-pointer">
             <i data-lucide="download" class="w-3.5 h-3.5"></i> 下载
           </button>
-          <button onclick="closeHistoryModal()" class="px-2.5 sm:px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center transition cursor-pointer">
+          <button onclick="closeHistoryModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center justify-center transition cursor-pointer">
             关闭
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- 全屏灯箱 (用于极大大图全屏缩放) -->
-  <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4" onclick="closeLightbox()">
-    <button class="absolute top-4 right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer" onclick="closeLightbox()">
+  <!-- 全屏灯箱 -->
+  <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-3" onclick="closeLightbox()">
+    <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer" onclick="closeLightbox()">
       <i data-lucide="x" class="w-5 h-5"></i>
     </button>
     <img id="lightboxImg" class="max-w-full max-h-[92vh] rounded-xl shadow-2xl object-contain" onclick="event.stopPropagation()" alt="Full view">
   </div>
 
   <!-- Toast 提示框 -->
-  <div id="toast" class="fixed bottom-5 sm:bottom-6 right-5 sm:right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 border border-slate-700 text-white text-xs px-4 py-2.5 sm:py-3 rounded-xl shadow-2xl flex items-center gap-2 max-w-[90vw]">
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 border border-slate-700 text-white text-xs px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 max-w-[90vw]">
     <i id="toastIcon" data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
     <span id="toastMsg" class="truncate">成功</span>
   </div>
 
-  <!-- 页面交互逻辑脚本 -->
   <script>
     lucide.createIcons();
 
@@ -370,12 +339,11 @@
     let selectedW = 1024;
     let selectedH = 1024;
     let selectedRatio = '1:1';
-    let batchCount = 1; // 批量出图张数 (1, 2, 4)
-    let historyList = JSON.parse(localStorage.getItem('gemini_history_v2') || '[]');
+    let timerInterval = null;
+    let historyList = JSON.parse(localStorage.getItem('gemini_history_classic') || '[]');
 
     renderHistory();
 
-    // 监听键盘 ESC 键，随时可快速关闭弹窗
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeHistoryModal();
@@ -402,33 +370,12 @@
 
     function selectRatio(btn) {
       document.querySelectorAll('.ratio-btn').forEach(b => {
-        b.className = "ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer";
+        b.className = "ratio-btn bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer";
       });
-      btn.className = "ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer";
+      btn.className = "ratio-btn bg-indigo-600/20 border-indigo-500/80 text-white border py-2 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer";
       selectedRatio = btn.getAttribute('data-ratio') || '1:1';
       selectedW = Number(btn.getAttribute('data-w'));
       selectedH = Number(btn.getAttribute('data-h'));
-    }
-
-    function selectBatchCount(btn) {
-      document.querySelectorAll('.batch-btn').forEach(b => {
-        b.className = "batch-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer";
-      });
-      btn.className = "batch-btn active bg-indigo-600/20 border-indigo-500/80 text-white border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer";
-      batchCount = Number(btn.getAttribute('data-count')) || 1;
-      
-      const badge = document.getElementById('batchCountBadge');
-      const btnText = document.getElementById('generateBtnText');
-      if (batchCount === 1) {
-        badge.innerText = "1 张单图";
-        btnText.innerText = "立即生成图片";
-      } else if (batchCount === 2) {
-        badge.innerText = "2 张双图对比";
-        btnText.innerText = "批量生成 2 张图片";
-      } else {
-        badge.innerText = "4 宫格矩阵";
-        btnText.innerText = "批量生成 4 宫格图片";
-      }
     }
 
     function showToast(msg, isError = false) {
@@ -446,10 +393,7 @@
       }, 3000);
     }
 
-    // =========================================================================
-    // 异步任务体系与批量生成核心
-    // =========================================================================
-    async function handleBatchGenerate() {
+    async function handleGenerate() {
       const prompt = document.getElementById('promptInput').value.trim();
       const negative_prompt = document.getElementById('negativeInput').value.trim();
 
@@ -460,182 +404,93 @@
 
       const generateBtn = document.getElementById('generateBtn');
       const emptyState = document.getElementById('emptyState');
-      const batchGrid = document.getElementById('batchTaskGrid');
+      const loadingState = document.getElementById('loadingState');
+      const errorState = document.getElementById('errorState');
+      const errorMsgText = document.getElementById('errorMsgText');
+      const resultImage = document.getElementById('resultImage');
       const actionToolbar = document.getElementById('actionToolbar');
       const metaBadge = document.getElementById('metaBadge');
-      const progressTag = document.getElementById('taskProgressTag');
+      const timerText = document.getElementById('timerText');
 
       generateBtn.disabled = true;
       emptyState.classList.add('hidden');
+      errorState.classList.add('hidden');
+      resultImage.classList.add('hidden');
       actionToolbar.classList.add('hidden');
-      batchGrid.classList.remove('hidden');
-      progressTag.classList.remove('hidden');
-      progressTag.innerText = `0/${batchCount} 完成`;
+      loadingState.classList.remove('hidden');
 
-      // 调整栅格排版：1张满屏，2张左右双列，4张2x2四宫格
-      if (batchCount === 1) {
-        batchGrid.className = "w-full h-full flex items-center justify-center p-2";
-      } else if (batchCount === 2) {
-        batchGrid.className = "w-full h-full grid grid-cols-1 sm:grid-cols-2 gap-3 p-2";
-      } else {
-        batchGrid.className = "w-full h-full grid grid-cols-2 gap-3 p-2";
-      }
+      const startTime = Date.now();
+      timerText.innerText = '0.0s';
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timerText.innerText = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
+      }, 100);
 
-      // 预先生成批量任务卡片骨架屏 (带流光动画和独立计时器)
-      batchGrid.innerHTML = Array.from({ length: batchCount }, (_, i) => `
-        <div id="taskCard_${i}" class="task-card relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center min-h-[220px] sm:min-h-[260px] group transition-all duration-300">
-          <div id="taskLoader_${i}" class="text-center space-y-3 p-4">
-            <div class="relative w-12 h-12 mx-auto">
-              <div class="absolute inset-0 rounded-full border-2 border-indigo-500/20"></div>
-              <div class="absolute inset-0 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
-              <div class="absolute inset-0 flex items-center justify-center text-indigo-400">
-                <i data-lucide="sparkles" class="w-4 h-4 animate-pulse"></i>
-              </div>
-            </div>
-            <div class="space-y-0.5">
-              <span class="text-[11px] text-slate-300 font-medium block">任务 #${i + 1} 绘制中</span>
-              <span id="taskTimer_${i}" class="text-[10px] text-indigo-400 font-mono">0.0s</span>
-            </div>
-          </div>
-          <img id="taskImg_${i}" class="hidden w-full h-full object-contain rounded-xl cursor-zoom-in" onclick="openLightbox(this.src)" alt="Task Output">
+      try {
+        const model = document.getElementById('modelSelect')?.value || 'gemini-3.1-flash-image';
+        const response = await fetch('/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt,
+            negative_prompt,
+            model,
+            aspect_ratio: selectedRatio,
+            width: selectedW,
+            height: selectedH
+          })
+        });
+
+        const data = await response.json();
+        clearInterval(timerInterval);
+
+        const imgUrl = data.url;
+
+        if (response.ok && data.success && imgUrl) {
+          const cost = ((Date.now() - startTime) / 1000).toFixed(1);
           
-          <!-- 单卡片快捷悬浮工具栏 -->
-          <div id="cardOverlay_${i}" class="hidden absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-3 flex items-end justify-between">
-            <span id="cardCost_${i}" class="text-[10px] text-indigo-300 font-mono"></span>
-            <div class="flex items-center gap-1.5">
-              <button onclick="downloadSpecificImg('${i}')" class="p-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs transition" title="下载此图">
-                <i data-lucide="download" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-      lucide.createIcons();
+          currentImageData = {
+            url: imgUrl,
+            prompt,
+            cost,
+            model: data.model || model,
+            ratio: selectedRatio,
+          };
 
-      const model = document.getElementById('modelSelect')?.value || 'gemini-3.1-flash-image-4K';
-      const batchStartTime = Date.now();
-      let completedCount = 0;
-      let firstSuccessUrl = null;
+          resultImage.src = imgUrl;
+          resultImage.classList.remove('hidden');
+          actionToolbar.classList.remove('hidden');
+          
+          metaBadge.innerText = `${(data.model || model).replace('gemini-', '')} · ${selectedRatio} · ${cost}s`;
+          metaBadge.classList.remove('hidden');
 
-      // 独立为每个任务启动计时器
-      const cardTimers = [];
-      for (let i = 0; i < batchCount; i++) {
-        const start = Date.now();
-        cardTimers[i] = setInterval(() => {
-          const el = document.getElementById(`taskTimer_${i}`);
-          if (el) el.innerText = ((Date.now() - start) / 1000).toFixed(1) + 's';
-        }, 100);
-      }
-
-      // 并发执行批量任务，哪张成功就点亮哪张
-      const taskPromises = Array.from({ length: batchCount }, async (_, i) => {
-        try {
-          const response = await fetch('/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              prompt,
-              negative_prompt,
-              model,
-              aspect_ratio: selectedRatio,
-              width: selectedW,
-              height: selectedH
-            })
-          });
-
-          clearInterval(cardTimers[i]);
-          const data = await response.json();
-          const imgUrl = data.url;
-
-          if (response.ok && data.success && imgUrl) {
-            completedCount++;
-            progressTag.innerText = `${completedCount}/${batchCount} 完成`;
-            if (!firstSuccessUrl) firstSuccessUrl = imgUrl;
-
-            const cost = ((Date.now() - batchStartTime) / 1000).toFixed(1);
-            
-            // 点亮卡片，展示图片与操作浮层
-            document.getElementById(`taskLoader_${i}`).classList.add('hidden');
-            const imgEl = document.getElementById(`taskImg_${i}`);
-            imgEl.src = imgUrl;
-            imgEl.classList.remove('hidden');
-
-            const overlayEl = document.getElementById(`cardOverlay_${i}`);
-            if (overlayEl) overlayEl.classList.remove('hidden');
-            const costEl = document.getElementById(`cardCost_${i}`);
-            if (costEl) costEl.innerText = `${cost}s`;
-
-            saveToHistory({
-              url: imgUrl,
-              prompt,
-              cost,
-              model: data.model || model,
-              ratio: selectedRatio,
-            });
-          } else {
-            document.getElementById(`taskLoader_${i}`).innerHTML = `
-              <div class="text-rose-400 space-y-1">
-                <i data-lucide="alert-circle" class="w-6 h-6 mx-auto"></i>
-                <span class="text-[11px] block">失败: ${data.error ? data.error.slice(0, 30) : '异常'}</span>
-              </div>
-            `;
-            lucide.createIcons();
-          }
-        } catch (err) {
-          clearInterval(cardTimers[i]);
-          document.getElementById(`taskLoader_${i}`).innerHTML = `
-            <div class="text-rose-400 space-y-1">
-              <i data-lucide="wifi-off" class="w-6 h-6 mx-auto"></i>
-              <span class="text-[11px] block">网络超时中断</span>
-            </div>
-          `;
-          lucide.createIcons();
+          saveToHistory(currentImageData);
+          showToast(`绘制成功！耗时 ${cost} 秒`);
+        } else {
+          errorState.classList.remove('hidden');
+          errorMsgText.innerText = data.error || ('HTTP ' + response.status + ': 生成失败');
+          showToast(data.error || '生成失败，请重试', true);
         }
-      });
-
-      await Promise.allSettled(taskPromises);
-
-      generateBtn.disabled = false;
-      const totalTime = ((Date.now() - batchStartTime) / 1000).toFixed(1);
-      progressTag.innerText = `完成 ${completedCount}/${batchCount} 张 (${totalTime}s)`;
-
-      if (firstSuccessUrl) {
-        currentImageData = {
-          url: firstSuccessUrl,
-          prompt,
-          cost: totalTime,
-          model,
-          ratio: selectedRatio
-        };
-        actionToolbar.classList.remove('hidden');
+      } catch (err) {
+        clearInterval(timerInterval);
+        errorState.classList.remove('hidden');
+        errorMsgText.innerText = '连接超时或异常: ' + err.message;
+        showToast('请求异常: ' + err.message, true);
+      } finally {
+        generateBtn.disabled = false;
+        loadingState.classList.add('hidden');
+        lucide.createIcons();
       }
-
-      metaBadge.innerText = `${model.replace('gemini-', '')} · ${selectedRatio} · ${totalTime}s`;
-      metaBadge.classList.remove('hidden');
-      showToast(`批处理结束，成功 ${completedCount}/${batchCount} 张！`);
-      lucide.createIcons();
-    }
-
-    function downloadSpecificImg(idx) {
-      const img = document.getElementById(`taskImg_${idx}`);
-      if (!img || !img.src) return;
-      const a = document.createElement('a');
-      a.href = img.src;
-      a.download = `gemini-batch-${idx}-${Date.now()}.jpg`;
-      a.target = '_blank';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
     }
 
     function saveToHistory(item) {
       historyList.unshift({
-        id: Date.now() + Math.random(),
+        id: Date.now(),
         ...item
       });
-      if (historyList.length > 40) historyList.pop();
+      if (historyList.length > 30) historyList.pop();
       try {
-        localStorage.setItem('gemini_history_v2', JSON.stringify(historyList));
+        localStorage.setItem('gemini_history_classic', JSON.stringify(historyList));
       } catch (e) {}
       renderHistory();
     }
@@ -646,7 +501,7 @@
       countEl.innerText = historyList.length;
 
       if (historyList.length === 0) {
-        grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-500">暂无历史记录</div>`;
+        grid.innerHTML = `<div class="col-span-full py-6 text-center text-xs text-slate-500">暂无作品记录</div>`;
         return;
       }
 
@@ -664,14 +519,11 @@
     function clearHistory() {
       if (!confirm('确定清空所有本地生成历史记录吗？')) return;
       historyList = [];
-      localStorage.removeItem('gemini_history_v2');
+      localStorage.removeItem('gemini_history_classic');
       renderHistory();
       showToast('历史记录已清空');
     }
 
-    // =========================================================================
-    // 独立历史弹窗逻辑 (不冲刷主画布)
-    // =========================================================================
     function openHistoryModal(index) {
       const item = historyList[index];
       if (!item) return;
@@ -687,8 +539,7 @@
     }
 
     function closeHistoryModal() {
-      const modal = document.getElementById('historyModal');
-      modal.classList.add('hidden');
+      document.getElementById('historyModal').classList.add('hidden');
     }
 
     function applyModalPrompt() {
@@ -703,7 +554,7 @@
     function copyModalPrompt() {
       if (!modalImageData || !modalImageData.prompt) return;
       navigator.clipboard.writeText(modalImageData.prompt);
-      showToast('历史提示词已复制到剪贴板');
+      showToast('历史提示词已复制');
     }
 
     function copyModalImageUrl() {
@@ -723,9 +574,6 @@
       document.body.removeChild(a);
     }
 
-    // =========================================================================
-    // 主视口与灯箱逻辑
-    // =========================================================================
     function copyImageUrl() {
       if (!currentImageData || !currentImageData.url) return;
       navigator.clipboard.writeText(currentImageData.url);

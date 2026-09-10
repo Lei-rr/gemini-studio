@@ -83,7 +83,7 @@ class UpstreamClient {
     }
 
     if (ratioStr) {
-      fullPrompt += ` --ar ${ratioStr} (aspect ratio: ${ratioStr})`;
+      fullPrompt += ` --ar ${ratioStr}`;
     }
 
     // 2. 负向提示词
