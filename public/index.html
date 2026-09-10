@@ -153,12 +153,12 @@
                 <span class="font-medium whitespace-nowrap">横屏壁纸</span>
                 <span class="text-[10px] text-slate-500 font-mono whitespace-nowrap">16:9 电脑宽屏</span>
               </button>
-              <button type="button" data-ratio="9:16" data-w="1080" data-h="1920" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
+              <button type="button" data-ratio="9:16" data-w="1080" data-h="1920" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
                 <span class="w-3.5 h-6 border border-current rounded flex items-center justify-center text-[9px] font-mono">9:16</span>
                 <span class="font-medium whitespace-nowrap">手机壁纸</span>
                 <span class="text-[10px] text-slate-500 font-mono whitespace-nowrap">9:16 竖屏海报</span>
               </button>
-              <button type="button" data-ratio="4:3" data-w="1024" data-h="768" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
+              <button type="button" data-ratio="4:3" data-w="1024" data-h="768" onclick="selectRatio(this)" class="ratio-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border p-2 sm:p-2.5 rounded-xl text-xs font-medium transition flex flex-col items-center gap-1 cursor-pointer">
                 <span class="w-5 h-4 border border-current rounded flex items-center justify-center text-[9px] font-mono">4:3</span>
                 <span class="font-medium whitespace-nowrap">标准画幅</span>
                 <span class="text-[10px] text-slate-500 font-mono whitespace-nowrap">4:3 经典相册</span>
@@ -166,11 +166,32 @@
             </div>
           </div>
 
+          <!-- 批量出图张数选择器 (新增) -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-1.5">
+                <i data-lucide="layers" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400"></i> 生成张数 (Batch Count)
+              </label>
+              <span id="batchCountBadge" class="text-[11px] text-indigo-400 font-mono">1 张单图</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2" id="batchSelector">
+              <button type="button" data-count="1" onclick="selectBatchCount(this)" class="batch-btn active bg-indigo-600/20 border-indigo-500/80 text-white border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i data-lucide="image" class="w-3.5 h-3.5"></i> 1 张
+              </button>
+              <button type="button" data-count="2" onclick="selectBatchCount(this)" class="batch-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i data-lucide="columns-2" class="w-3.5 h-3.5"></i> 2 张对比
+              </button>
+              <button type="button" data-count="4" onclick="selectBatchCount(this)" class="batch-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i data-lucide="grid-2x2" class="w-3.5 h-3.5"></i> 4 宫格
+              </button>
+            </div>
+          </div>
+
           <!-- 生成按钮 -->
-          <button id="generateBtn" onclick="handleGenerate()" 
+          <button id="generateBtn" onclick="handleBatchGenerate()" 
             class="w-full py-3.5 sm:py-4 rounded-xl font-bold text-sm sm:text-base bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-[0.99] text-white shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
             <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform"></i>
-            <span>立即生成图片</span>
+            <span id="generateBtnText">立即生成图片</span>
           </button>
         </div>
 
@@ -189,19 +210,25 @@
 
       <!-- 右侧当前视口展示区 (7 列) -->
       <div class="lg:col-span-7 space-y-4 sm:space-y-6">
-        <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-xl flex flex-col min-h-[420px] sm:min-h-[520px]">
+        <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 sm:p-6 backdrop-blur-xl shadow-xl flex flex-col min-h-[440px] sm:min-h-[540px]">
           
           <div class="flex items-center justify-between pb-3 sm:pb-4 mb-3 sm:mb-4 border-b border-slate-800/80">
-            <h3 class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2">
-              <i data-lucide="image" class="w-4 h-4 text-indigo-400"></i> 画布视口 (当前生图任务)
-            </h3>
+            <div class="flex items-center gap-2">
+              <h3 class="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-2">
+                <i data-lucide="image" class="w-4 h-4 text-indigo-400"></i> 画布工作台 (当前任务)
+              </h3>
+              <span id="taskProgressTag" class="hidden text-[10px] px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-mono">
+                进行中...
+              </span>
+            </div>
+            
             <div id="metaBadge" class="hidden text-[11px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono whitespace-nowrap">
               --
             </div>
           </div>
 
-          <!-- 图片展示与加载视口 -->
-          <div id="displayViewport" class="flex-1 rounded-xl bg-slate-950/80 border border-slate-800/60 flex items-center justify-center p-2 sm:p-4 relative overflow-hidden group min-h-[300px] sm:min-h-[380px]">
+          <!-- 核心画布视口 (支持 1张 / 2张对比 / 4宫格异步渲染卡片) -->
+          <div id="displayViewport" class="flex-1 rounded-xl bg-slate-950/80 border border-slate-800/60 flex items-center justify-center p-3 relative overflow-hidden group min-h-[320px] sm:min-h-[420px]">
             
             <!-- 默认空状态 -->
             <div id="emptyState" class="text-center space-y-2.5 sm:space-y-3 max-w-sm py-8 sm:py-12 px-4">
@@ -209,43 +236,17 @@
                 <i data-lucide="palette" class="w-6 h-6 sm:w-8 sm:h-8"></i>
               </div>
               <h4 class="text-slate-200 font-semibold text-sm sm:text-base">准备创作</h4>
-              <p class="text-xs text-slate-400 leading-relaxed">在左侧输入你的灵感提示词，点击“立即生成图片”，当前任务的作品将在这里呈现。</p>
+              <p class="text-xs text-slate-400 leading-relaxed">在左侧输入你的灵感提示词，支持单张或 2~4 宫格批量出图，任务将在右侧实时呈现。</p>
             </div>
 
-            <!-- 加载状态动画 -->
-            <div id="loadingState" class="hidden text-center space-y-3 sm:space-y-4 py-12 sm:py-16">
-              <div class="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto">
-                <div class="absolute inset-0 rounded-full border-4 border-indigo-500/20"></div>
-                <div class="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
-                <div class="absolute inset-0 flex items-center justify-center text-indigo-400">
-                  <i data-lucide="sparkles" class="w-6 h-6 sm:w-7 sm:h-7 animate-pulse"></i>
-                </div>
-              </div>
-              <div class="space-y-1">
-                <h4 class="text-sm sm:text-base text-slate-200 font-semibold">AI 正在绘制画面...</h4>
-                <p class="text-xs text-slate-400">已耗时 <span id="timerText" class="font-mono text-indigo-400 font-bold">0.0s</span> (自动并发调度)</p>
-              </div>
+            <!-- 动态批量任务栅格卡片容器 (动态填入) -->
+            <div id="batchTaskGrid" class="hidden w-full h-full grid gap-3 items-center justify-center">
+              <!-- JS 渲染每个子任务卡片 -->
             </div>
 
-            <!-- 错误状态提示卡片 -->
-            <div id="errorState" class="hidden text-center space-y-3 sm:space-y-4 py-8 sm:py-10 max-w-md px-4">
-              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto">
-                <i data-lucide="alert-triangle" class="w-6 h-6 sm:w-7 sm:h-7"></i>
-              </div>
-              <div class="space-y-1">
-                <h4 class="text-slate-200 font-semibold text-sm sm:text-base">生图未成功</h4>
-                <p id="errorMsgText" class="text-xs text-rose-400/90 font-mono bg-rose-950/30 border border-rose-500/20 p-2 sm:p-2.5 rounded-lg break-all"></p>
-              </div>
-              <button onclick="handleGenerate()" class="px-4 sm:px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition">
-                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> 立即重试
-              </button>
-            </div>
-
-            <!-- 生成的图片展示 -->
-            <img id="resultImage" class="hidden max-h-[500px] sm:max-h-[600px] w-auto max-w-full rounded-lg object-contain shadow-2xl transition duration-300 cursor-zoom-in" onclick="openLightbox(this.src)" alt="Generated Output">
           </div>
 
-          <!-- 快捷操作栏 (自适应手机网格排列) -->
+          <!-- 快捷操作栏 (单张大图或批量生成完成后出现) -->
           <div id="actionToolbar" class="hidden mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-2">
             <button onclick="openLightbox()" class="w-full sm:w-auto px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1.5 transition">
               <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> 全屏预览
@@ -369,8 +370,8 @@
     let selectedW = 1024;
     let selectedH = 1024;
     let selectedRatio = '1:1';
-    let timerInterval = null;
-    let historyList = JSON.parse(localStorage.getItem('sd_history') || '[]');
+    let batchCount = 1; // 批量出图张数 (1, 2, 4)
+    let historyList = JSON.parse(localStorage.getItem('gemini_history_v2') || '[]');
 
     renderHistory();
 
@@ -409,6 +410,27 @@
       selectedH = Number(btn.getAttribute('data-h'));
     }
 
+    function selectBatchCount(btn) {
+      document.querySelectorAll('.batch-btn').forEach(b => {
+        b.className = "batch-btn bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200 border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer";
+      });
+      btn.className = "batch-btn active bg-indigo-600/20 border-indigo-500/80 text-white border py-2 px-3 rounded-xl text-xs font-medium transition flex items-center justify-center gap-1.5 cursor-pointer";
+      batchCount = Number(btn.getAttribute('data-count')) || 1;
+      
+      const badge = document.getElementById('batchCountBadge');
+      const btnText = document.getElementById('generateBtnText');
+      if (batchCount === 1) {
+        badge.innerText = "1 张单图";
+        btnText.innerText = "立即生成图片";
+      } else if (batchCount === 2) {
+        badge.innerText = "2 张双图对比";
+        btnText.innerText = "批量生成 2 张图片";
+      } else {
+        badge.innerText = "4 宫格矩阵";
+        btnText.innerText = "批量生成 4 宫格图片";
+      }
+    }
+
     function showToast(msg, isError = false) {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toastMsg');
@@ -424,7 +446,10 @@
       }, 3000);
     }
 
-    async function handleGenerate() {
+    // =========================================================================
+    // 异步任务体系与批量生成核心
+    // =========================================================================
+    async function handleBatchGenerate() {
       const prompt = document.getElementById('promptInput').value.trim();
       const negative_prompt = document.getElementById('negativeInput').value.trim();
 
@@ -435,98 +460,183 @@
 
       const generateBtn = document.getElementById('generateBtn');
       const emptyState = document.getElementById('emptyState');
-      const loadingState = document.getElementById('loadingState');
-      const errorState = document.getElementById('errorState');
-      const errorMsgText = document.getElementById('errorMsgText');
-      const resultImage = document.getElementById('resultImage');
+      const batchGrid = document.getElementById('batchTaskGrid');
       const actionToolbar = document.getElementById('actionToolbar');
       const metaBadge = document.getElementById('metaBadge');
-      const timerText = document.getElementById('timerText');
+      const progressTag = document.getElementById('taskProgressTag');
 
       generateBtn.disabled = true;
       emptyState.classList.add('hidden');
-      errorState.classList.add('hidden');
-      resultImage.classList.add('hidden');
       actionToolbar.classList.add('hidden');
-      loadingState.classList.remove('hidden');
+      batchGrid.classList.remove('hidden');
+      progressTag.classList.remove('hidden');
+      progressTag.innerText = `0/${batchCount} 完成`;
 
-      const startTime = Date.now();
-      timerText.innerText = '0.0s';
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        timerText.innerText = ((Date.now() - startTime) / 1000).toFixed(1) + 's';
-      }, 100);
-
-      try {
-        const model = document.getElementById('modelSelect')?.value || 'gemini-3.1-flash-image-4K';
-        const response = await fetch('/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt,
-            negative_prompt,
-            model,
-            aspect_ratio: selectedRatio,
-            width: selectedW,
-            height: selectedH
-          })
-        });
-
-        const data = await response.json();
-        clearInterval(timerInterval);
-
-        const imgUrl = data.url || (data.images && data.images.length ? ('data:image/jpeg;base64,' + data.images[0]) : null);
-
-        if (response.ok && data.success && imgUrl) {
-          const cost = ((Date.now() - startTime) / 1000).toFixed(1);
-          
-          currentImageData = {
-            url: imgUrl,
-            prompt,
-            cost,
-            model: data.model || model,
-            ratio: selectedRatio,
-            dimensions: `${selectedW}x${selectedH}`,
-          };
-
-          resultImage.src = imgUrl;
-          resultImage.classList.remove('hidden');
-          actionToolbar.classList.remove('hidden');
-          
-          metaBadge.innerText = `${data.model || model} · ${cost}s`;
-          metaBadge.classList.remove('hidden');
-
-          saveToHistory(currentImageData);
-          showToast(`生成成功！耗时 ${cost} 秒`);
-        } else {
-          errorState.classList.remove('hidden');
-          errorMsgText.innerText = data.error || ('HTTP ' + response.status + ': 生成失败');
-          showToast(data.error || '生成失败，请重试', true);
-        }
-      } catch (err) {
-        clearInterval(timerInterval);
-        errorState.classList.remove('hidden');
-        errorMsgText.innerText = '网络异常: ' + err.message;
-        showToast('请求异常: ' + err.message, true);
-      } finally {
-        generateBtn.disabled = false;
-        loadingState.classList.add('hidden');
-        lucide.createIcons();
+      // 调整栅格排版：1张满屏，2张左右双列，4张2x2四宫格
+      if (batchCount === 1) {
+        batchGrid.className = "w-full h-full flex items-center justify-center p-2";
+      } else if (batchCount === 2) {
+        batchGrid.className = "w-full h-full grid grid-cols-1 sm:grid-cols-2 gap-3 p-2";
+      } else {
+        batchGrid.className = "w-full h-full grid grid-cols-2 gap-3 p-2";
       }
+
+      // 预先生成批量任务卡片骨架屏 (带流光动画和独立计时器)
+      batchGrid.innerHTML = Array.from({ length: batchCount }, (_, i) => `
+        <div id="taskCard_${i}" class="task-card relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center min-h-[220px] sm:min-h-[260px] group transition-all duration-300">
+          <div id="taskLoader_${i}" class="text-center space-y-3 p-4">
+            <div class="relative w-12 h-12 mx-auto">
+              <div class="absolute inset-0 rounded-full border-2 border-indigo-500/20"></div>
+              <div class="absolute inset-0 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin"></div>
+              <div class="absolute inset-0 flex items-center justify-center text-indigo-400">
+                <i data-lucide="sparkles" class="w-4 h-4 animate-pulse"></i>
+              </div>
+            </div>
+            <div class="space-y-0.5">
+              <span class="text-[11px] text-slate-300 font-medium block">任务 #${i + 1} 绘制中</span>
+              <span id="taskTimer_${i}" class="text-[10px] text-indigo-400 font-mono">0.0s</span>
+            </div>
+          </div>
+          <img id="taskImg_${i}" class="hidden w-full h-full object-contain rounded-xl cursor-zoom-in" onclick="openLightbox(this.src)" alt="Task Output">
+          
+          <!-- 单卡片快捷悬浮工具栏 -->
+          <div id="cardOverlay_${i}" class="hidden absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-3 flex items-end justify-between">
+            <span id="cardCost_${i}" class="text-[10px] text-indigo-300 font-mono"></span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="downloadSpecificImg('${i}')" class="p-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs transition" title="下载此图">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+
+      const model = document.getElementById('modelSelect')?.value || 'gemini-3.1-flash-image-4K';
+      const batchStartTime = Date.now();
+      let completedCount = 0;
+      let firstSuccessUrl = null;
+
+      // 独立为每个任务启动计时器
+      const cardTimers = [];
+      for (let i = 0; i < batchCount; i++) {
+        const start = Date.now();
+        cardTimers[i] = setInterval(() => {
+          const el = document.getElementById(`taskTimer_${i}`);
+          if (el) el.innerText = ((Date.now() - start) / 1000).toFixed(1) + 's';
+        }, 100);
+      }
+
+      // 并发执行批量任务，哪张成功就点亮哪张
+      const taskPromises = Array.from({ length: batchCount }, async (_, i) => {
+        try {
+          const response = await fetch('/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt,
+              negative_prompt,
+              model,
+              aspect_ratio: selectedRatio,
+              width: selectedW,
+              height: selectedH
+            })
+          });
+
+          clearInterval(cardTimers[i]);
+          const data = await response.json();
+          const imgUrl = data.url;
+
+          if (response.ok && data.success && imgUrl) {
+            completedCount++;
+            progressTag.innerText = `${completedCount}/${batchCount} 完成`;
+            if (!firstSuccessUrl) firstSuccessUrl = imgUrl;
+
+            const cost = ((Date.now() - batchStartTime) / 1000).toFixed(1);
+            
+            // 点亮卡片，展示图片与操作浮层
+            document.getElementById(`taskLoader_${i}`).classList.add('hidden');
+            const imgEl = document.getElementById(`taskImg_${i}`);
+            imgEl.src = imgUrl;
+            imgEl.classList.remove('hidden');
+
+            const overlayEl = document.getElementById(`cardOverlay_${i}`);
+            if (overlayEl) overlayEl.classList.remove('hidden');
+            const costEl = document.getElementById(`cardCost_${i}`);
+            if (costEl) costEl.innerText = `${cost}s`;
+
+            saveToHistory({
+              url: imgUrl,
+              prompt,
+              cost,
+              model: data.model || model,
+              ratio: selectedRatio,
+            });
+          } else {
+            document.getElementById(`taskLoader_${i}`).innerHTML = `
+              <div class="text-rose-400 space-y-1">
+                <i data-lucide="alert-circle" class="w-6 h-6 mx-auto"></i>
+                <span class="text-[11px] block">失败: ${data.error ? data.error.slice(0, 30) : '异常'}</span>
+              </div>
+            `;
+            lucide.createIcons();
+          }
+        } catch (err) {
+          clearInterval(cardTimers[i]);
+          document.getElementById(`taskLoader_${i}`).innerHTML = `
+            <div class="text-rose-400 space-y-1">
+              <i data-lucide="wifi-off" class="w-6 h-6 mx-auto"></i>
+              <span class="text-[11px] block">网络超时中断</span>
+            </div>
+          `;
+          lucide.createIcons();
+        }
+      });
+
+      await Promise.allSettled(taskPromises);
+
+      generateBtn.disabled = false;
+      const totalTime = ((Date.now() - batchStartTime) / 1000).toFixed(1);
+      progressTag.innerText = `完成 ${completedCount}/${batchCount} 张 (${totalTime}s)`;
+
+      if (firstSuccessUrl) {
+        currentImageData = {
+          url: firstSuccessUrl,
+          prompt,
+          cost: totalTime,
+          model,
+          ratio: selectedRatio
+        };
+        actionToolbar.classList.remove('hidden');
+      }
+
+      metaBadge.innerText = `${model.replace('gemini-', '')} · ${selectedRatio} · ${totalTime}s`;
+      metaBadge.classList.remove('hidden');
+      showToast(`批处理结束，成功 ${completedCount}/${batchCount} 张！`);
+      lucide.createIcons();
+    }
+
+    function downloadSpecificImg(idx) {
+      const img = document.getElementById(`taskImg_${idx}`);
+      if (!img || !img.src) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = `gemini-batch-${idx}-${Date.now()}.jpg`;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     function saveToHistory(item) {
-      // 头部插入，保留最近 30 条
       historyList.unshift({
-        id: Date.now(),
+        id: Date.now() + Math.random(),
         ...item
       });
-      if (historyList.length > 30) historyList.pop();
+      if (historyList.length > 40) historyList.pop();
       try {
-        localStorage.setItem('sd_history', JSON.stringify(historyList));
-      } catch (e) {
-        console.warn('LocalStorage save failed:', e);
-      }
+        localStorage.setItem('gemini_history_v2', JSON.stringify(historyList));
+      } catch (e) {}
       renderHistory();
     }
 
@@ -544,7 +654,7 @@
         <div class="group relative aspect-square rounded-xl overflow-hidden bg-slate-950 border border-slate-800 hover:border-indigo-500/60 transition shadow-sm cursor-pointer" onclick="openHistoryModal(${idx})">
           <img src="${item.url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" alt="History Item">
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition p-2 flex flex-col justify-end">
-            <span class="text-[10px] text-indigo-300 font-mono truncate">${item.model?.replace('gemini-', '') || 'Gemini'}</span>
+            <span class="text-[10px] text-indigo-300 font-mono truncate">${item.ratio || '1:1'}</span>
             <span class="text-[9px] text-slate-400 font-mono">${item.cost || '--'}s</span>
           </div>
         </div>
@@ -554,7 +664,7 @@
     function clearHistory() {
       if (!confirm('确定清空所有本地生成历史记录吗？')) return;
       historyList = [];
-      localStorage.removeItem('sd_history');
+      localStorage.removeItem('gemini_history_v2');
       renderHistory();
       showToast('历史记录已清空');
     }
@@ -569,7 +679,7 @@
       modalImageData = item;
       document.getElementById('modalImage').src = item.url;
       document.getElementById('modalPromptText').innerText = item.prompt || '(无提示词)';
-      document.getElementById('modalMetaBadge').innerText = `${item.model || 'gemini'} · ${item.ratio || item.dimensions || ''} · ${item.cost || ''}s`;
+      document.getElementById('modalMetaBadge').innerText = `${item.model || 'gemini'} · ${item.ratio || ''} · ${item.cost || ''}s`;
 
       const modal = document.getElementById('historyModal');
       modal.classList.remove('hidden');
